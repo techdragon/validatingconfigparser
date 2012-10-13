@@ -7,7 +7,7 @@ import validatingconfigparser
 import formencode.validators
 
 from nose.tools import *
-    
+
 
 class RawConfigParserWithoutSchema():
     def setup(self):
