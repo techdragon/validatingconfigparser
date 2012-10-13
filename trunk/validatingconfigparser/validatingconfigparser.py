@@ -25,11 +25,14 @@ from ConfigParser import SafeConfigParser as _SafeConfigParser
 from ConfigParser import RawConfigParser as _RawConfigParser
 #from ConfigParser import _default_dict
 
+from formencode.validators import FancyValidator
+from formencode.schema import Schema
 
-
-class Validator(object):
+class DummyValidator(FancyValidator):
     """
     Base class for derived validators.
+
+    TODO: Rewrite this __doc__
     
     `Validator` is loosely modelled after the `formencode.api.FancyValidator` class.
     It provides two methods, `to_python()` and `from_python()`. The `to_python()`
@@ -61,16 +64,7 @@ class Validator(object):
     
     """
     
-    def __init__(self):
-        pass
-    
-    def to_python(self, value):
-        return self._to_python(value)
-    
-    def from_python(self, value):
-        return self._from_python(value)
-    
-    def _to_python(self, value):
+    def _to_python(self, value, state):
         """
         Called by `to_python()` to validate and convert `value`.
         
@@ -83,7 +77,7 @@ class Validator(object):
 
         return value
         
-    def _from_python(self, value):
+    def _from_python(self, value, state):
         """
         Called by `from_python()` to validate and convert `value`.
         
@@ -146,7 +140,7 @@ class ValidatingMixIn(object):
             # return the default validator which simply returns the `value`
             # unchanged.
             #
-            validator = getattr(self.schema, option, Validator())
+            validator = getattr(self.schema, option, DummyValidator())
           
         return validator.to_python(self.parent.get(self, section, option, 
                                                    *args, **kwargs))
@@ -173,7 +167,7 @@ class ValidatingMixIn(object):
             # return the default validator which simply returns the `value`
             # unchanged.
             #
-            validator = getattr(self.schema, option, Validator())
+            validator = getattr(self.schema, option, DummyValidator())
         
         return validator.to_python(self.parent.getint(self, section, option, 
                                                       *args, **kwargs))
@@ -200,7 +194,7 @@ class ValidatingMixIn(object):
             # return the default validator which simply returns the `value`
             # unchanged.
             #
-            validator = getattr(self.schema, option, Validator())
+            validator = getattr(self.schema, option, DummyValidator())
         
         return validator.to_python(self.parent.getfloat(self, section, option, 
                                                         *args, **kwargs))
@@ -227,7 +221,7 @@ class ValidatingMixIn(object):
             # return the default validator which simply returns the `value`
             # unchanged.
             #
-            validator = getattr(self.schema, option, Validator())
+            validator = getattr(self.schema, option, DummyValidator())
         
         return validator.to_python(self.parent.getboolean(self, section, option, 
                                                           *args, **kwargs))
@@ -253,7 +247,7 @@ class ValidatingMixIn(object):
             # return the default validator which simply returns the `value`
             # unchanged.
             #
-            validator = getattr(self.schema, option, Validator())
+            validator = getattr(self.schema, option, DummyValidator())
         
         self.parent.set(self, section, option, validator.from_python(value), 
                         *args, **kwargs)
@@ -283,7 +277,7 @@ class ValidatingMixIn(object):
                 # or return the default validator which simply returns the 
                 # `value` unchanged.
                 #
-                validator = getattr(self.schema, option, Validator())
+                validator = getattr(self.schema, option, DummyValidator())
                 
                 # Validate the `value` and add it to the dictionary of validated
                 # items.
