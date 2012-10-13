@@ -14,17 +14,17 @@ __license__ = "Apache License 2.0"
 __revision__ = "$Rev:$"
 
 
+# Import everything from ConfigParser into the local namespace, but
+# ensure that the ConfigParser, SafeConfigParser and RawConfigParser
+# classes are available under a different name as they are being
+# overwritten by this module.
+#
 from ConfigParser import *
 from ConfigParser import ConfigParser as _ConfigParser
 from ConfigParser import SafeConfigParser as _SafeConfigParser
 from ConfigParser import RawConfigParser as _RawConfigParser
-from ConfigParser import _default_dict
-"""
-Import everything from ConfigParser into the local namespace, but
-ensure that the ConfigParser, SafeConfigParser and RawConfigParser
-classes are available under a different name as they are being
-overwritten by this module.
-"""
+#from ConfigParser import _default_dict
+
 
 
 class Validator(object):
@@ -122,7 +122,7 @@ class ValidatingMixIn(object):
         if isinstance(self, ConfigParser):
             self.parent = _ConfigParser
         
-        if isinstance(self,_SafeConfigParser):
+        if isinstance(self, _SafeConfigParser):
             self.parent = _SafeConfigParser
             
         self.parent.__init__(self, *args, **kwargs)
@@ -148,7 +148,8 @@ class ValidatingMixIn(object):
             #
             validator = getattr(self.schema, option, Validator())
           
-        return validator.to_python(self.parent.get(self, section, option, *args, **kwargs))
+        return validator.to_python(self.parent.get(self, section, option, 
+                                                   *args, **kwargs))
     
     
     def getint(self, section, option, validator=None, *args, **kwargs):
@@ -174,7 +175,8 @@ class ValidatingMixIn(object):
             #
             validator = getattr(self.schema, option, Validator())
         
-        return validator.to_python(self.parent.getint(self, section, option, *args, **kwargs))
+        return validator.to_python(self.parent.getint(self, section, option, 
+                                                      *args, **kwargs))
     
     
     def getfloat(self, section, option, validator=None, *args, **kwargs):
@@ -200,7 +202,8 @@ class ValidatingMixIn(object):
             #
             validator = getattr(self.schema, option, Validator())
         
-        return validator.to_python(self.parent.getfloat(self, section, option, *args, **kwargs))
+        return validator.to_python(self.parent.getfloat(self, section, option, 
+                                                        *args, **kwargs))
     
     
     def getboolean(self, section, option, validator=None, *args, **kwargs):
@@ -226,7 +229,8 @@ class ValidatingMixIn(object):
             #
             validator = getattr(self.schema, option, Validator())
         
-        return validator.to_python(self.parent.getboolean(self, section, option, *args, **kwargs))
+        return validator.to_python(self.parent.getboolean(self, section, option, 
+                                                          *args, **kwargs))
     
 
     def set(self, section, option, value, validator=None, *args, **kwargs):
@@ -251,7 +255,8 @@ class ValidatingMixIn(object):
             #
             validator = getattr(self.schema, option, Validator())
         
-        self.parent.set(self, section, option, validator.from_python(value))
+        self.parent.set(self, section, option, validator.from_python(value), 
+                        *args, **kwargs)
 
 
     def items(self, section, *args, **kwargs):
@@ -268,13 +273,15 @@ class ValidatingMixIn(object):
         if self.schema is None:
             return items
         else:
+            # TODO: change items dictionary inline instad of copying
+            #       all entries to validated_items.
             validated_items = dict()
             
             for (option, value) in items:
                 
-                # Find a matching validator for this `option` in `self.schema` or
-                # return the default validator which simply returns the `value`
-                # unchanged.
+                # Find a matching validator for this `option` in `self.schema` 
+                # or return the default validator which simply returns the 
+                # `value` unchanged.
                 #
                 validator = getattr(self.schema, option, Validator())
                 
@@ -286,7 +293,7 @@ class ValidatingMixIn(object):
             return validated_items
                  
         
-class RawConfigParser(ValidatingMixIn,_RawConfigParser): pass
+class RawConfigParser(ValidatingMixIn, _RawConfigParser): pass
 
 
 class ConfigParser(ValidatingMixIn, _ConfigParser): pass
