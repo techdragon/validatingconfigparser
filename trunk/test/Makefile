@@ -2,7 +2,7 @@
 NOSETESTS := nosetests -v --stop --pdb --pdb-failures
 
 
-all: test_configparser_standard \
+test: test_configparser_standard \
      test_configparser_validating \
      test_validating_configparser
 
