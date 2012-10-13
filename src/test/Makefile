@@ -35,6 +35,8 @@ test_configparser_validating:
 # module.
 #
 test_validating_configparser:
+	PYTHONPATH=../validatingconfigparser $(NOSETESTS) test_validatingcfgparser.py
+
 
 #reset_ConfigParser:
 #	-rm -fv ConfigParser.py
