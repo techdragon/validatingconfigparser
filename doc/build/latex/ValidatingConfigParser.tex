@@ -13,7 +13,7 @@
 
 
 \title{ValidatingConfigParser Documentation}
-\date{October 09, 2012}
+\date{October 14, 2012}
 \release{0.0.1}
 \author{Markus Juenemann}
 \newcommand{\sphinxlogo}{}
@@ -148,16 +148,17 @@ parser.get("name", "section", validator=validator)
 
 As it may be tedious to create your own validating \emph{ConfigParser} sub-class as shown above,
 the \emph{validatingconfigparser} module already provides validating variants of the
-original parsers for convenience.
+original parsers for convenience. These parsers can be used as direct replacements of
+the original parsers as their API is compatible.
 \begin{itemize}
 \item {} 
-\emph{validatingconfigparser.ValidatingRawConfigParser}
+\emph{validatingconfigparser.RawConfigParser}
 
 \item {} 
-\emph{validatingconfigparser.ValidatingConfigParser}
+\emph{validatingconfigparser.ConfigParser}
 
 \item {} 
-\emph{validatingconfigparser.ValidatingSafeConfigParser}
+\emph{validatingconfigparser.SafeConfigParser}
 
 \end{itemize}
 
