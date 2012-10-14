@@ -1,11 +1,12 @@
 
 """
+    Extend Python's ConfigParser classes to allow validation of values.
 
 .. warning:: 
 
-   The classes in the `ConfigParser` module of the Python Standard library are
-   old-style classes (http://bugs.python.org/issue5807), i.e. they don't inherit
-   from `object`. In contrast the classes in this module are new style classes.
+    The classes in the `ConfigParser` module of the Python Standard library are
+    old-style classes (http://bugs.python.org/issue5807), i.e. they don't inherit
+    from `object`. In contrast the classes in this module are new style classes.
    
 """
 
@@ -25,10 +26,16 @@ from ConfigParser import SafeConfigParser as _SafeConfigParser
 from ConfigParser import RawConfigParser as _RawConfigParser
 #from ConfigParser import _default_dict
 
-from formencode.validators import FancyValidator
-from formencode.schema import Schema
+import formencode.validators
+import formencode.schema
 
-class DummyValidator(FancyValidator):
+
+class DummySchema(formencode.schema.Schema):
+    def __init__(self, *args, **kwargs):
+        super(DummySchema, self).__init__(allow_extra_fields=True, *args, **kwargs)
+
+
+class DummyValidator(formencode.validators.FancyValidator):
     """
     Base class for derived validators.
 
@@ -96,7 +103,7 @@ class ValidatingMixIn(object):
         try:
             self.schema = kwargs.pop("schema")
         except KeyError:
-            self.schema = None
+            self.schema = None  #DummySchema()
 
         """
         Find my parent class. This is one of
@@ -121,6 +128,21 @@ class ValidatingMixIn(object):
             
         self.parent.__init__(self, *args, **kwargs)
 
+    def find_validator(self, section, option):
+        """
+        Find a validator for option in section.
+        
+        The returned validator will be
+        - a validator for `option` if there is one in the schema, or
+        - a dummy validator. 
+         
+        """
+        
+        try:
+            return self.schema.fields[option]
+        except (KeyError, AttributeError):
+            return DummyValidator()
+        
         
     def get(self, section, option, validator=None, *args, **kwargs):
         """
@@ -136,11 +158,7 @@ class ValidatingMixIn(object):
         """
         
         if validator is None:
-            # Find a matching validator for this `option` in `self.schema` or
-            # return the default validator which simply returns the `value`
-            # unchanged.
-            #
-            validator = getattr(self.schema, option, DummyValidator())
+            validator = self.find_validator(section, option)
           
         return validator.to_python(self.parent.get(self, section, option, 
                                                    *args, **kwargs))
@@ -163,11 +181,7 @@ class ValidatingMixIn(object):
         """
         
         if validator is None:
-            # Find a matching validator for this `option` in `self.schema` or
-            # return the default validator which simply returns the `value`
-            # unchanged.
-            #
-            validator = getattr(self.schema, option, DummyValidator())
+            validator = self.find_validator(section, option)
         
         return validator.to_python(self.parent.getint(self, section, option, 
                                                       *args, **kwargs))
@@ -190,11 +204,7 @@ class ValidatingMixIn(object):
         """
         
         if validator is None:
-            # Find a matching validator for this `option` in `self.schema` or
-            # return the default validator which simply returns the `value`
-            # unchanged.
-            #
-            validator = getattr(self.schema, option, DummyValidator())
+            validator = self.find_validator(section, option)
         
         return validator.to_python(self.parent.getfloat(self, section, option, 
                                                         *args, **kwargs))
@@ -217,11 +227,7 @@ class ValidatingMixIn(object):
         """
         
         if validator is None:
-            # Find a matching validator for this `option` in `self.schema` or
-            # return the default validator which simply returns the `value`
-            # unchanged.
-            #
-            validator = getattr(self.schema, option, DummyValidator())
+            validator = self.find_validator(section, option)
         
         return validator.to_python(self.parent.getboolean(self, section, option, 
                                                           *args, **kwargs))
