@@ -56,7 +56,6 @@ class IntTests():
         else:
             assert self.parser.get("firstsection", "integer") == 1
         
-        
     def test_get_Int_within_min_max(self):
         validator = formencode.validators.Int(min=1, max=1)
         assert self.parser.get("firstsection", "integer", validator) == 1
@@ -67,18 +66,18 @@ class IntTests():
         assert self.parser.get("firstsection", "integer", validator) == 1
 
 
-    def test_getint_Int(self):
-        validator = formencode.validators.Int()
-        assert self.parser.getint("firstsection", "integer", validator) == 1
-        
-    def test_getint_Int_within_min_max(self):
-        validator = formencode.validators.Int(min=1, max=1)
-        assert self.parser.getint("firstsection", "integer", validator) == 1
-    
-    @raises(formencode.Invalid)
-    def test_getint_Int_outside_min_max(self):
-        validator = formencode.validators.Int(min=2, max=2)
-        assert self.parser.getint("firstsection", "integer", validator) == 1
+#    def test_getint_Int(self):
+#        validator = formencode.validators.Int()
+#        assert self.parser.getint("firstsection", "integer", validator) == 1
+#        
+#    def test_getint_Int_within_min_max(self):
+#        validator = formencode.validators.Int(min=1, max=1)
+#        assert self.parser.getint("firstsection", "integer", validator) == 1
+#    
+#    @raises(formencode.Invalid)
+#    def test_getint_Int_outside_min_max(self):
+#        validator = formencode.validators.Int(min=2, max=2)
+#        assert self.parser.getint("firstsection", "integer", validator) == 1
 
 
 class BoolTests():
@@ -91,13 +90,13 @@ class BoolTests():
         assert self.parser.get("firstsection", "stringbool_true", validator) is True
         
         
-    def test_getboolean_StringBool_false(self):
-        validator = formencode.validators.StringBool()
-        assert self.parser.getboolean("firstsection", "stringbool_false", validator) is False
-    
-    def test_getboolean_StringBool_true(self):
-        validator = formencode.validators.StringBool()
-        assert self.parser.getboolean("firstsection", "stringbool_true", validator) is True
+#    def test_getboolean_StringBool_false(self):
+#        validator = formencode.validators.StringBool()
+#        assert self.parser.getboolean("firstsection", "stringbool_false", validator) is False
+#    
+#    def test_getboolean_StringBool_true(self):
+#        validator = formencode.validators.StringBool()
+#        assert self.parser.getboolean("firstsection", "stringbool_true", validator) is True
         
         
 #    def test_get_Bool_false(self):
@@ -113,10 +112,10 @@ class BoolTests():
 #        validator = formencode.validators.Bool()
 #        assert self.parser.getboolean("firstsection", "bool_false", validator) is False
     
-    def test_getboolean_Bool_true(self):
-        validator = formencode.validators.StringBool()
-        assert self.parser.getboolean("firstsection", "bool_true", validator) is True
-    
+#    def test_getboolean_Bool_true(self):
+#        validator = formencode.validators.StringBool()
+#        assert self.parser.getboolean("firstsection", "bool_true", validator) is True
+#    
     
 class AllTests(IntTests, BoolTests): pass  
         
