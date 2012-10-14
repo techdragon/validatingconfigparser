@@ -6,6 +6,8 @@ test: test_configparser_standard \
      test_configparser_validating \
      test_validating_configparser
 
+coverage: test_validating_configparser_coverage
+
 
 # Run the Python Standard Library test suite against the
 # `ConfigParser` of the Python Standard Library. This is simply 
@@ -37,6 +39,12 @@ test_configparser_validating:
 test_validating_configparser:
 	PYTHONPATH=../validatingconfigparser $(NOSETESTS) test_validatingcfgparser.py
 
+
+# Run specific tests for the `validatingconfigparser`
+# module and report coverage.
+#
+test_validating_configparser_coverage:
+	PYTHONPATH=../validatingconfigparser $(NOSETESTS) --with-coverage test_validatingcfgparser.py
 
 #reset_ConfigParser:
 #	-rm -fv ConfigParser.py

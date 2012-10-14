@@ -1,6 +1,28 @@
 
 """
     Extend Python's ConfigParser classes to allow validation of values.
+    
+    - The the `RawConfigParser`, `ConfigParser` and `SafeConfigParser` classes
+      now accept a new `schema` keyword argument, e.g.
+      
+      >>> parser = ConfigParser(schema=my_schema)
+    
+    - The `set()` and `get()` methods of above classes accept a new `validator` 
+      keyword argument.
+      
+      >>> value = parser.get(section, option, validator=my_validator)
+      
+    - The `items()` method of above classes will observe the validation schema
+      that was passed to the class when it was instantiated.
+      
+    - All other methods are remain unchanged. The `getint()`, `getfloat()`
+      and `getboolean()` methods do not provide validation beyond their
+      original logic.  
+      
+    Schemas and validators must follow the same API as their counterparts
+    of the **Formencode** package. The `validatingconfigparser` package
+    was explicitely designed so that the classes provied by **Formencode**
+    can be used as is.     
 
 .. warning:: 
 
@@ -30,9 +52,9 @@ import formencode.validators
 import formencode.schema
 
 
-class DummySchema(formencode.schema.Schema):
-    def __init__(self, *args, **kwargs):
-        super(DummySchema, self).__init__(allow_extra_fields=True, *args, **kwargs)
+#class DummySchema(formencode.schema.Schema):
+#    def __init__(self, *args, **kwargs):
+#        super(DummySchema, self).__init__(allow_extra_fields=True, *args, **kwargs)
 
 
 class DummyValidator(formencode.validators.FancyValidator):
@@ -164,73 +186,73 @@ class ValidatingMixIn(object):
                                                    *args, **kwargs))
     
     
-    def getint(self, section, option, validator=None, *args, **kwargs):
-        """
-        Add `validator` keyword argument to parent's `getint()` method.
-        
-        Parent will be one of `ConfigParser.RawConfigParser`, `ConfigParser.ConfigParser`
-        or ``ConfigParser.SafeConfigParser`.  
-                
-        With the exception of `validator` all arguments (`section`, `option`, `*args` and
-        `**kwargs`) will be passed on to the parent's `getint()` method. The parent method 
-        will raise ``TypeError`` if it receives an argument that it does not support.  
-        
-        Validation will be performed on the value that is returned by the parent's
-        `getint()` method.   
-        
-        """
-        
-        if validator is None:
-            validator = self.find_validator(section, option)
-        
-        return validator.to_python(self.parent.getint(self, section, option, 
-                                                      *args, **kwargs))
-    
-    
-    def getfloat(self, section, option, validator=None, *args, **kwargs):
-        """
-        Add `validator` keyword argument to parent's `getfloat()` method.
-        
-        Parent will be one of `ConfigParser.RawConfigParser`, `ConfigParser.ConfigParser`
-        or ``ConfigParser.SafeConfigParser`.  
-                
-        With the exception of `validator` all arguments (`section`, `option`, `*args` and
-        `**kwargs`) will be passed on to the parent's `getfloat()` method. The parent method 
-        will raise ``TypeError`` if it receives an argument that it does not support.
-        
-        Validation will be performed on the value that is returned by the parent's
-        `getfloat()` method.   
-        
-        """
-        
-        if validator is None:
-            validator = self.find_validator(section, option)
-        
-        return validator.to_python(self.parent.getfloat(self, section, option, 
-                                                        *args, **kwargs))
-    
-    
-    def getboolean(self, section, option, validator=None, *args, **kwargs):
-        """
-        Add `validator` keyword argument to parent's `getboolean()` method.
-        
-        Parent will be one of `ConfigParser.RawConfigParser`, `ConfigParser.ConfigParser`
-        or ``ConfigParser.SafeConfigParser`.  
-                
-        With the exception of `validator` all arguments (`section`, `option`, `*args` and
-        `**kwargs`) will be passed on to the parent's `getboolean()` method. The parent method 
-        will raise ``TypeError`` if it receives an argument that it does not support.
-        
-        Validation will be performed on the value that is returned by the parent's
-        `getboolean()` method.   
-        
-        """
-        
-        if validator is None:
-            validator = self.find_validator(section, option)
-        
-        return validator.to_python(self.parent.getboolean(self, section, option, 
-                                                          *args, **kwargs))
+#    def getint(self, section, option, validator=None, *args, **kwargs):
+#        """
+#        Add `validator` keyword argument to parent's `getint()` method.
+#        
+#        Parent will be one of `ConfigParser.RawConfigParser`, `ConfigParser.ConfigParser`
+#        or ``ConfigParser.SafeConfigParser`.  
+#                
+#        With the exception of `validator` all arguments (`section`, `option`, `*args` and
+#        `**kwargs`) will be passed on to the parent's `getint()` method. The parent method 
+#        will raise ``TypeError`` if it receives an argument that it does not support.  
+#        
+#        Validation will be performed on the value that is returned by the parent's
+#        `getint()` method.   
+#        
+#        """
+#        
+#        if validator is None:
+#            validator = self.find_validator(section, option)
+#        
+#        return validator.to_python(self.parent.getint(self, section, option, 
+#                                                      *args, **kwargs))
+#    
+#    
+#    def getfloat(self, section, option, validator=None, *args, **kwargs):
+#        """
+#        Add `validator` keyword argument to parent's `getfloat()` method.
+#        
+#        Parent will be one of `ConfigParser.RawConfigParser`, `ConfigParser.ConfigParser`
+#        or ``ConfigParser.SafeConfigParser`.  
+#                
+#        With the exception of `validator` all arguments (`section`, `option`, `*args` and
+#        `**kwargs`) will be passed on to the parent's `getfloat()` method. The parent method 
+#        will raise ``TypeError`` if it receives an argument that it does not support.
+#        
+#        Validation will be performed on the value that is returned by the parent's
+#        `getfloat()` method.   
+#        
+#        """
+#        
+#        if validator is None:
+#            validator = self.find_validator(section, option)
+#        
+#        return validator.to_python(self.parent.getfloat(self, section, option, 
+#                                                        *args, **kwargs))
+#    
+#    
+#    def getboolean(self, section, option, validator=None, *args, **kwargs):
+#        """
+#        Add `validator` keyword argument to parent's `getboolean()` method.
+#        
+#        Parent will be one of `ConfigParser.RawConfigParser`, `ConfigParser.ConfigParser`
+#        or ``ConfigParser.SafeConfigParser`.  
+#                
+#        With the exception of `validator` all arguments (`section`, `option`, `*args` and
+#        `**kwargs`) will be passed on to the parent's `getboolean()` method. The parent method 
+#        will raise ``TypeError`` if it receives an argument that it does not support.
+#        
+#        Validation will be performed on the value that is returned by the parent's
+#        `getboolean()` method.   
+#        
+#        """
+#        
+#        if validator is None:
+#            validator = self.find_validator(section, option)
+#        
+#        return validator.to_python(self.parent.getboolean(self, section, option, 
+#                                                          *args, **kwargs))
     
 
     def set(self, section, option, value, validator=None, *args, **kwargs):
