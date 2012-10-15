@@ -1,28 +1,43 @@
 
 [firstsection]
-integer: 1
-stringbool_true: True
+integer_good: 1
+integer_too_small: 0
+integer_too_big: 100
+#
+bool_one: 1
+bool_zero: 0
+#
+stringbool_true: true
 stringbool_false: false
-bool_true: 1
-bool_false: 0
+stringbool_yes: yes
+stringbool_no: no
+#
+number_int_good: 10
+number_int_too_small: 0
+number_int_too_big: 100
+number_float_good: 10.5
+number_float_too_small: 0.0
+number_float_too_big: 100.0
+#
+no_validator: 10
 
-[goodsection1]
-integer: 1
-stringbool_true: True
+
+
+# good_section contains only values that 
+# will pass validation.
+#
+[good_section]
+integer_good: 1
+#
+bool_one: 1
+bool_zero: 0
+#
+stringbool_true: true
 stringbool_false: false
-bool_true: 1
-bool_false: 0
-
-[goodsection2]
-integer: 1
-stringbool_true: True
-stringbool_false: false
-bool_true: 1
-bool_false: 0
-
-[badsection1]
-integer: dummy
-stringbool_true: dummy
-stringbool_false: dummy
-bool_true: dummy
-bool_false: dummy
+stringbool_yes: yes
+stringbool_no: no
+#
+number_int_good: 10
+number_float_good: 10.5
+#
+no_validator: 10

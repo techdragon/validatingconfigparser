@@ -1,4 +1,5 @@
 import validatingconfigparser
+import ConfigParser
 import StringIO
 import unittest
 import UserDict
@@ -113,7 +114,7 @@ class TestCaseBase(unittest.TestCase):
                     "remove_option() failed to report non-existence of option"
                     " that was removed")
 
-        self.assertRaises(validatingconfigparser.NoSectionError,
+        self.assertRaises(ConfigParser.NoSectionError,
                           cf.remove_option, 'No Such Section', 'foo')
 
         eq(cf.get('Long Line', 'foo'),
@@ -166,15 +167,15 @@ class TestCaseBase(unittest.TestCase):
 
     def test_parse_errors(self):
         self.newconfig()
-        self.parse_error(validatingconfigparser.ParsingError,
+        self.parse_error(ConfigParser.ParsingError,
                          "[Foo]\n  extra-spaces: splat\n")
-        self.parse_error(validatingconfigparser.ParsingError,
+        self.parse_error(ConfigParser.ParsingError,
                          "[Foo]\n  extra-spaces= splat\n")
-        self.parse_error(validatingconfigparser.ParsingError,
+        self.parse_error(ConfigParser.ParsingError,
                          "[Foo]\n:value-without-option-name\n")
-        self.parse_error(validatingconfigparser.ParsingError,
+        self.parse_error(ConfigParser.ParsingError,
                          "[Foo]\n=value-without-option-name\n")
-        self.parse_error(validatingconfigparser.MissingSectionHeaderError,
+        self.parse_error(ConfigParser.MissingSectionHeaderError,
                          "No Section!\n")
 
     def parse_error(self, exc, src):
@@ -187,13 +188,13 @@ class TestCaseBase(unittest.TestCase):
                          "new validatingconfigparser should have no defined sections")
         self.assertFalse(cf.has_section("Foo"),
                     "new validatingconfigparser should have no acknowledged sections")
-        self.assertRaises(validatingconfigparser.NoSectionError,
+        self.assertRaises(ConfigParser.NoSectionError,
                           cf.options, "Foo")
-        self.assertRaises(validatingconfigparser.NoSectionError,
+        self.assertRaises(ConfigParser.NoSectionError,
                           cf.set, "foo", "bar", "value")
-        self.get_error(validatingconfigparser.NoSectionError, "foo", "bar")
+        self.get_error(ConfigParser.NoSectionError, "foo", "bar")
         cf.add_section("foo")
-        self.get_error(validatingconfigparser.NoOptionError, "foo", "bar")
+        self.get_error(ConfigParser.NoOptionError, "foo", "bar")
 
     def get_error(self, exc, section, option):
         try:
@@ -232,7 +233,7 @@ class TestCaseBase(unittest.TestCase):
     def test_weird_errors(self):
         cf = self.newconfig()
         cf.add_section("Foo")
-        self.assertRaises(validatingconfigparser.DuplicateSectionError,
+        self.assertRaises(ConfigParser.DuplicateSectionError,
                           cf.add_section, "Foo")
 
     def test_write(self):
@@ -365,11 +366,11 @@ class ConfigParserTestCase(TestCaseBase):
            "something with lots of interpolation (9 steps)")
         eq(cf.get("Foo", "bar10"),
            "something with lots of interpolation (10 steps)")
-        self.get_error(validatingconfigparser.InterpolationDepthError, "Foo", "bar11")
+        self.get_error(ConfigParser.InterpolationDepthError, "Foo", "bar11")
 
     def test_interpolation_missing_value(self):
         self.get_interpolation_config()
-        e = self.get_error(validatingconfigparser.InterpolationError,
+        e = self.get_error(ConfigParser.InterpolationError,
                            "Interpolation Error", "name")
         self.assertEqual(e.reference, "reference")
         self.assertEqual(e.section, "Interpolation Error")
