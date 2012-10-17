@@ -1,0 +1,334 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Tutorial &mdash; validatingconfigparser 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="validatingconfigparser 0.2.0 documentation" href="index.html" />
+    <link rel="next" title="Reference" href="reference.html" />
+    <link rel="prev" title="Introduction" href="introduction.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="reference.html" title="Reference"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">validatingconfigparser 0.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="tutorial">
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="sample-configuration-file">
+<h2>Sample configuration file<a class="headerlink" href="#sample-configuration-file" title="Permalink to this headline">¶</a></h2>
+<p>All examples in this tutorial will use the ini-style configuration
+file shown below.</p>
+<div class="highlight-cfg"><pre># tutorial-config.ini
+
+[peter]
+name: Peter Angus
+gender: male
+age: 30
+married: yes
+weight: 80.5
+
+[paul]
+name: Paul Benson
+gender: male
+age: -1
+# Paul will be born next year ;-)
+married: false
+
+[mary]
+name: Mary Christy
+gender: female
+age: 25
+married: no
+
+</pre>
+</div>
+</div>
+<div class="section" id="backwards-compatibility">
+<h2>Backwards compatibility<a class="headerlink" href="#backwards-compatibility" title="Permalink to this headline">¶</a></h2>
+<p>The classes of the <cite>validatingconfigparser</cite> module are backwards
+compatible to the classes that can be found in
+the <cite>ConfigParser</cite> module of the Python Standard Library.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">validatingconfigparser</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">validatingconfigparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s">&#39;tutorial-config.ini&#39;</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;gender&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">getint</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;married&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">getfloat</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;weight&#39;</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="mi">31</span><span class="p">))</span>  <span class="c"># Peter is getting older.</span>
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">getint</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;height&#39;</span><span class="p">)</span>	   <span class="c"># no such option!</span>
+</pre></div>
+</div>
+<p>The program above will produce the following output.</p>
+<div class="highlight-python"><pre>Peter Angus
+male
+30
+True
+80.5
+None
+31
+Traceback (most recent call last):
+...
+ConfigParser.NoOptionError: No option 'height' in section: 'peter'</pre>
+</div>
+</div>
+<div class="section" id="adding-validation">
+<h2>Adding validation<a class="headerlink" href="#adding-validation" title="Permalink to this headline">¶</a></h2>
+<p>Adding validators can ensure that values are valid. At the same time validators
+also convert the type of a value. Only the <cite>get()</cite> method supports the
+<cite>validator</cite> keyword argument. This is no limitation since the validator will
+convert the value as required and the <cite>getfloat()</cite>, <cite>getint()</cite> and
+<cite>getboolean()</cite> methods are no longer required.</p>
+<p>The API of <cite>validatingconfigparser</cite> is designed so that the validators of the
+<cite>Formencode</cite> project can be used &#8220;out of the box&#8221;.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">validatingconfigparser</span>
+<span class="kn">import</span> <span class="nn">formencode.validators</span> <span class="kn">as</span> <span class="nn">validators</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">validatingconfigparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s">&#39;tutorial-config.ini&#39;</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">String</span><span class="p">())</span>
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;gender&#39;</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">OneOf</span><span class="p">([</span><span class="s">&#39;male&#39;</span><span class="p">,</span> <span class="s">&#39;female&#39;</span><span class="p">]))</span>
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;married&#39;</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">StringBool</span><span class="p">())</span>
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;weight&#39;</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">Number</span><span class="p">())</span>
+
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+        <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>  <span class="c"># Peter is back in the womb!</span>
+</pre></div>
+</div>
+<p>The output is similar to the earlier example but setting Peter&#8217;s
+age to a negative number will raise a <cite>formencode.api.Invalid</cite>
+exception.</p>
+<div class="highlight-python"><pre>Peter Angus
+male
+30
+True
+80.5
+[('name', 'Peter Angus'), ('gender', 'male'), ('age', 30),
+ ('married', True), ('weight', 80.5)]
+Traceback (most recent call last):
+...
+formencode.api.Invalid: Please enter a number that is 0 or greater</pre>
+</div>
+</div>
+<div class="section" id="the-convenience-of-schemas">
+<h2>The convenience of schemas<a class="headerlink" href="#the-convenience-of-schemas" title="Permalink to this headline">¶</a></h2>
+<p>Adding a validator to every <cite>get()</cite> call will become tedious very quickly. A much
+more elegant approach is to define a schema that describes how values will be
+validated. A schema is simply a collection of validators.</p>
+<p>The <cite>items()</cite> method also uses the schema and all values will be validated.</p>
+<p>A schema will automatically apply to all options across all sections of the
+configuration file. Even with a schema it is still possible to use the
+<cite>validator</cite> argument of the <cite>get()</cite> method. In this case the validator
+given as the keyword argument will be used instead of the validator of the
+schema.</p>
+<p>If a schema does not contain a validator for an option then no validation
+will be performed.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">validatingconfigparser</span>
+<span class="kn">import</span> <span class="nn">formencode.validators</span> <span class="kn">as</span> <span class="nn">validators</span>
+<span class="kn">import</span> <span class="nn">formencode.schema</span> <span class="kn">as</span> <span class="nn">schema</span>
+
+<span class="k">class</span> <span class="nc">MySchema</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">Schema</span><span class="p">):</span>
+    <span class="c"># Not validating names!</span>
+
+    <span class="n">gender</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">OneOf</span><span class="p">([</span><span class="s">&#39;male&#39;</span><span class="p">,</span> <span class="s">&#39;female&#39;</span><span class="p">])</span>
+    <span class="n">age</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">married</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">StringBool</span><span class="p">()</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">Number</span><span class="p">()</span>
+    
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">validatingconfigparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">(</span><span class="n">schema</span><span class="o">=</span><span class="n">MySchema</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s">&#39;tutorial-config.ini&#39;</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;gender&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;married&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;weight&#39;</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="s">&quot;peter&quot;</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;peter&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output would be exactly the same as the previous example.</p>
+</div>
+<div class="section" id="writing-your-own-validator">
+<h2>Writing your own validator<a class="headerlink" href="#writing-your-own-validator" title="Permalink to this headline">¶</a></h2>
+<p>The <cite>Formencode</cite> package provides a large number of different validators
+but sometimes it may be necessary to write a custom validator. For this
+one can either sub-class <cite>formencode.api.FancyValidator</cite> or write one from
+scratch.</p>
+<p>Sub-classing <cite>FancyValidator</cite> is best described in the official <cite>Formencode</cite>
+documentation but a simple example would look like this.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">formencode</span> <span class="kn">import</span> <span class="n">Invalid</span>
+<span class="kn">from</span> <span class="nn">formencode.api</span> <span class="kn">import</span> <span class="n">FancyValidator</span>
+
+<span class="k">class</span> <span class="nc">EvenValidator</span><span class="p">(</span><span class="n">FancyValidator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">validate_python</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">Invalid</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> not an even number&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">value</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_to_python</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="c"># Called by get() - must accept string.</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_from_python</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="c"># Called by set() - must return string.</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+
+<span class="k">print</span> <span class="n">EvenValidator</span><span class="p">()</span><span class="o">.</span><span class="n">to_python</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">EvenValidator</span><span class="p">()</span><span class="o">.</span><span class="n">to_python</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><pre>2
+Traceback (most recent call last):
+...
+formencode.api.Invalid: 1 not an even number</pre>
+</div>
+<p>Writing a validator from scratch is equally simple but instead of providing
+<cite>_to_python()</cite> and <cite>_from_python()</cite> methods (note the leading underscore) one
+has to implement <cite>to_python()</cite> and <cite>from_python()</cite> directly.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EvenValidator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> not an even number&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">to_python</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="c"># Called by get() - must accept string.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">from_python</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="c"># Called by set() - must return string.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+
+<span class="k">print</span> <span class="n">EvenValidator</span><span class="p">()</span><span class="o">.</span><span class="n">to_python</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">EvenValidator</span><span class="p">()</span><span class="o">.</span><span class="n">to_python</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><pre>2
+ValueError: 1 not an even number</pre>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Tutorial</a><ul>
+<li><a class="reference internal" href="#sample-configuration-file">Sample configuration file</a></li>
+<li><a class="reference internal" href="#backwards-compatibility">Backwards compatibility</a></li>
+<li><a class="reference internal" href="#adding-validation">Adding validation</a></li>
+<li><a class="reference internal" href="#the-convenience-of-schemas">The convenience of schemas</a></li>
+<li><a class="reference internal" href="#writing-your-own-validator">Writing your own validator</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="introduction.html"
+                        title="previous chapter">Introduction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="reference.html"
+                        title="next chapter">Reference</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/tutorial.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="reference.html" title="Reference"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction"
+             >previous</a> |</li>
+        <li><a href="index.html">validatingconfigparser 0.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Markus Juenemann.
+      Last updated on 17-Oct-2012.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

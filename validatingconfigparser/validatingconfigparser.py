@@ -147,6 +147,12 @@ class ValidatingMixIn(object):
         
         if validator is None:
             validator = self.find_validator(section, option)
+
+        # Force validation on FancyValidator derived classes
+        try:
+            validator.accept_python = False
+        except:
+            pass
         
         self.parent.set(self, section, option, validator.from_python(value), 
                         *args, **kwargs)

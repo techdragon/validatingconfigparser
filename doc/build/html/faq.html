@@ -1,7 +1,5 @@
 
 
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -10,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Index &mdash; validatingconfigparser 0.2.0 documentation</title>
+    <title>FAQ &mdash; validatingconfigparser 0.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -27,15 +25,19 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="validatingconfigparser 0.2.0 documentation" href="index.html" /> 
+    <link rel="top" title="validatingconfigparser 0.2.0 documentation" href="index.html" />
+    <link rel="prev" title="Reference" href="reference.html" /> 
   </head>
   <body>
     <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="#" title="General Index"
+          <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="reference.html" title="Reference"
+             accesskey="P">previous</a> |</li>
         <li><a href="index.html">validatingconfigparser 0.2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -45,11 +47,20 @@
         <div class="bodywrapper">
           <div class="body">
             
-
-<h1 id="index">Index</h1>
-
-<div class="genindex-jumpbox">
- 
+  <div class="section" id="faq">
+<h1>FAQ<a class="headerlink" href="#faq" title="Permalink to this headline">¶</a></h1>
+<p>This document provides answers to frequently asked questions.</p>
+<div class="section" id="why-does-formencode-s-bool-validator-does-not-work-as-expected">
+<h2>Why does Formencode&#8217;s Bool() validator does not work as expected<a class="headerlink" href="#why-does-formencode-s-bool-validator-does-not-work-as-expected" title="Permalink to this headline">¶</a></h2>
+<p>The <cite>Configparser.get()</cite> method of the Python Standard Library
+always returns strings and Python interprets a non-empty string
+as <tt class="docutils literal"><span class="pre">True</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="s">&#39;False&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Use the <cite>formencode.validator.StringBool()</cite> validator instead.</p>
+</div>
 </div>
 
 
@@ -58,9 +69,22 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">FAQ</a><ul>
+<li><a class="reference internal" href="#why-does-formencode-s-bool-validator-does-not-work-as-expected">Why does Formencode&#8217;s Bool() validator does not work as expected</a></li>
+</ul>
+</li>
+</ul>
 
-   
-
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="reference.html"
+                        title="previous chapter">Reference</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/faq.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -82,8 +106,11 @@
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="#" title="General Index"
+          <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="reference.html" title="Reference"
+             >previous</a> |</li>
         <li><a href="index.html">validatingconfigparser 0.2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
