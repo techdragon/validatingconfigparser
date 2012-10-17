@@ -1,58 +1,44 @@
-ValidatingConfigParser
+validatingconfigparser
 ======================
 
-Introduction
-------------
+The `validatingconfigparser` module extends the ConfigParser module
+of the Python Standard Library to allow validation of values.
 
-The `validatingconfigparser` module provides the class `ValidatingMixIn` 
-which is meant to be used as a mix-in class for the `RawConfigParser`, `ConfigParser` 
-and `SafeConfigParser` classes found in the Python Standard Library. 
-It extends the `get()`, `getint()`, `getfloat()`, `getboolean()` and 
-`set()` methods by an additional keyword argument *validator*. This *validator* can be
-used to ensure that the *value* returned or given as argument to above methods passes
-a validation test. The *validator* must be an instance of a class that provides the same methods as the
-validators of the `Formencode` project. In fact, `ValidatingMixIn` was specifically
-designed to use the `Formencode.validators`.
+- The `RawConfigParser`, `ConfigParser` and `SafeConfigParser` classes
+  accept a new `schema` keyword argument, e.g.
 
-.. code-block:: python
+  >>> importvalidatingconfigparser
+  >>> parser = validatingconfigparser.ConfigParser(schema=my_schema)
 
-    from ConfigParser import ConfigParser
-    from validatingconfigparser import ValidatingMixIn
-    from formencode.validators.import OneOf
-    
-    # Ensure that the value is either 1, 2 or 3.
-    validator = OneOf([1, 2, 3])
-    
-    # Create a new parser with the ValidatingMixin.
-    class ValidatingConfigParser(ValidatingMixIn, ConfigParser):
-        pass
-        
-    parser = ValidatingConfigParser()
-    parse.read("settings.conf")
-    
-    # Below will raise formencode.Invalid if validation fails.
-    parser.get("name", "section", validator=validator)
+- The `set()` and `get()` methods of above classes accept a new `validator`
+  keyword argument.
 
-As it may be tedious to create your own validating `ConfigParser` sub-class as shown above,
-the `validatingconfigparser` module already provides validating variants of the
-original parsers for convenience. These parsers can be used as direct replacements of
-the original parsers as their API is compatible.
+  >>> value = parser.get(section, option, validator=my_validator)
+  >>> parser.set(section, option, value, validator=my_validator)
 
-* `validatingconfigparser.RawConfigParser`
-* `validatingconfigparser.ConfigParser`
-* `validatingconfigparser.SafeConfigParser`
+  If no `validator` argument is provided, then either a matching validator
+  of the schema will be used `value` is used without validation, i.e.
+  unchanged.
 
-In addition the *__init_()* methods of the validating parser listed above accepts a 
-*schema* keyword argument which must be an instance of a `Formencode.Schema` class. 
+- The `items()` method of above classes will observe the validation schema
+  of the parser.
+
+  >>> parser.schema = my_other_schema
+  >>> items = parser.items()
+
+- All other methods remain unchanged. The `getint()`, `getfloat()`
+  and `getboolean()` methods do not provide validation beyond their
+  original logic of coercing the value into an integer, float or
+  boolean type.
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
    
-   #examples
-   
-
+   tutorial
+   reference
+   faq
 
 
 Indices and tables
