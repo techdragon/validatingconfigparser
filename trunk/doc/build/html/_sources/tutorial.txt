@@ -98,7 +98,7 @@ Writing your own validator
 --------------------------
 
 The `Formencode` package provides a large number of different validators 
-but sometimes it may be necessary to write a custom validator. For this purpose
+but sometimes it may be necessary to write a custom validator. For this 
 one can either sub-class `formencode.api.FancyValidator` or write one from 
 scratch. 
 
